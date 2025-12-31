@@ -3,270 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unitv Filmes - Premium Guide (V15 GitHub)</title>
+    <title>Unitv Filmes - Premium Guide (V15.1)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <style>
         /* --- ESTILO GERAL --- */
-        :root {
-            --netflix-red: #E50914;
-            --youtube-red: #FF0000;
-            --bg-black: #141414;
-            --bg-dark-grey: #181818;
-            --text-white: #fff;
-            --star-gold: #ffc107;
-            --tv-bezel: #2a2a2a;
-            --rating-green: #46d369;
-        }
+        :root { --netflix-red: #E50914; --youtube-red: #FF0000; --bg-black: #141414; --bg-dark-grey: #181818; --text-white: #fff; --star-gold: #ffc107; --tv-bezel: #2a2a2a; --rating-green: #46d369; }
+        body { background-color: var(--bg-black); color: var(--text-white); font-family: 'Roboto', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg-black);
-            color: var(--text-white);
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        /* --- HEADER E NAV --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 4%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0));
-            position: fixed;
-            width: 92%;
-            z-index: 1000;
-        }
-
-        .logo {
-            color: var(--netflix-red);
-            font-size: 2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px #000;
-        }
-
-        .secret-gear {
-            color: rgba(255, 255, 255, 0.05);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 10px;
-            transition: color 0.3s;
-        }
+        /* --- HEADER --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0)); position: fixed; width: 92%; z-index: 1000; }
+        .logo { color: var(--netflix-red); font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px #000; }
+        .secret-gear { color: rgba(255, 255, 255, 0.05); font-size: 1.5rem; cursor: pointer; padding: 10px; transition: color 0.3s; }
         .secret-gear:hover { color: rgba(255, 255, 255, 0.2); }
 
-        /* --- DESTAQUE (HERO SECTION) --- */
-        .hero {
-            height: 70vh;
-            background: url('https://image.tmdb.org/t/p/original/uDgy6hyPd82kOHh6I95FLtLnj6p.jpg') center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            padding: 0 4%;
-            position: relative;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(to top, var(--bg-black), transparent);
-        }
-
+        /* --- HERO --- */
+        .hero { height: 70vh; background: url('https://image.tmdb.org/t/p/original/uDgy6hyPd82kOHh6I95FLtLnj6p.jpg') center/cover no-repeat; display: flex; align-items: center; padding: 0 4%; position: relative; }
+        .hero::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 200px; background: linear-gradient(to top, var(--bg-black), transparent); }
         .hero-content { z-index: 10; max-width: 600px; }
         .hero-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .hero-desc { font-size: 1.1rem; margin-bottom: 20px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
-
-        .btn-hero {
-            background-color: var(--netflix-red);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .btn-hero { background-color: var(--netflix-red); color: white; padding: 12px 30px; border: none; border-radius: 4px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 10px; }
         .btn-hero:hover { transform: scale(1.05); }
 
-        /* --- CARROSSEL --- */
+        /* --- LISTAS --- */
         .section-title { padding: 0 4%; margin-top: 10px; position: relative; z-index: 20; font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; border-left: 5px solid var(--netflix-red); padding-left: 15px; margin-left: 4%; }
-        
         .carousel-container { padding: 10px 4% 40px; position: relative; z-index: 20; display: flex; overflow-x: auto; gap: 15px; scroll-behavior: smooth; }
         .carousel-container::-webkit-scrollbar { height: 5px; }
         .carousel-container::-webkit-scrollbar-track { background: #000; }
         .carousel-container::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
 
-        .movie-card {
-            min-width: 160px; height: 240px; border-radius: 4px; position: relative;
-            transition: transform 0.3s ease, z-index 0.3s; cursor: pointer; background-color: #222; overflow: hidden; flex-shrink: 0;
-        }
+        .movie-card { min-width: 160px; height: 240px; border-radius: 4px; position: relative; transition: transform 0.3s ease, z-index 0.3s; cursor: pointer; background-color: #222; overflow: hidden; flex-shrink: 0; }
         .movie-card:hover { transform: scale(1.1); z-index: 50; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
         .movie-img { width: 100%; height: 100%; object-fit: cover; }
-
-        .movie-info-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); opacity: 0; transition: opacity 0.3s;
-        }
+        .movie-info-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); opacity: 0; transition: opacity 0.3s; }
         .movie-card:hover .movie-info-overlay { opacity: 1; }
         .movie-title { font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; text-shadow: 1px 1px 2px black;}
-        
-        /* Badges */
-        .type-badge {
-            position: absolute; top: 5px; right: 5px; padding: 2px 6px; border-radius: 3px; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; z-index: 2;
-        }
+        .type-badge { position: absolute; top: 5px; right: 5px; padding: 2px 6px; border-radius: 3px; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; z-index: 2; }
         .badge-yt { background-color: var(--youtube-red); color: white; }
-        
-        /* NOTA (Badge Verde) */
-        .rating-badge {
-            position: absolute; top: 5px; left: 5px; 
-            background-color: var(--rating-green); color: #000; 
-            padding: 3px 8px; border-radius: 4px; 
-            font-size: 0.75rem; font-weight: 900; 
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-            z-index: 2;
-        }
+        .rating-badge { position: absolute; top: 5px; left: 5px; background-color: var(--rating-green); color: #000; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 900; box-shadow: 2px 2px 5px rgba(0,0,0,0.5); z-index: 2; }
 
-        /* --- TV RETRÔ STYLE --- */
+        /* --- TV RETRÔ --- */
         .tv-container-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
-        .retro-tv {
-            position: relative; width: 100%; max-width: 500px; aspect-ratio: 4/3; 
-            background: var(--tv-bezel); border-radius: 20px; padding: 15px;
-            box-shadow: inset 0 0 20px #000, 0 10px 20px rgba(0,0,0,0.5); border: 3px solid #444;
-        }
-        .tv-screen-inner {
-            width: 100%; height: 100%; background: #000; border-radius: 50% / 10%; 
-            overflow: hidden; position: relative; border: 2px solid #111;
-        }
-        
-        #trailerContainer {
-            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
-            z-index: 10; 
-        }
-        
-        #trailerContainer iframe {
-            width: 100%; height: 100%; border: none;
-        }
+        .retro-tv { position: relative; width: 100%; max-width: 500px; aspect-ratio: 4/3; background: var(--tv-bezel); border-radius: 20px; padding: 15px; box-shadow: inset 0 0 20px #000, 0 10px 20px rgba(0,0,0,0.5); border: 3px solid #444; }
+        .tv-screen-inner { width: 100%; height: 100%; background: #000; border-radius: 50% / 10%; overflow: hidden; position: relative; border: 2px solid #111; }
+        #trailerContainer { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 10; }
+        #trailerContainer iframe { width: 100%; height: 100%; border: none; }
+        .scanlines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 0, 0, 0.3) 3px, rgba(0, 0, 0, 0.3) 4px); pointer-events: none; z-index: 20; opacity: 0.5; }
+        .retro-tv::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 30%); border-radius: 50% / 10%; pointer-events: none; z-index: 30; }
 
-        .scanlines {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 0, 0, 0.3) 3px, rgba(0, 0, 0, 0.3) 4px);
-            pointer-events: none;
-            z-index: 20; opacity: 0.5;
-        }
-        .retro-tv::before {
-            content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 30%);
-            border-radius: 50% / 10%; 
-            pointer-events: none;
-            z-index: 30;
-        }
-
-        /* --- MODAIS GERAIS --- */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); 
-            z-index: 2000;
-            justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
-        
-        #notepadModal {
-            z-index: 3000 !important;
-        }
-
-        .modal-content {
-            background-color: var(--bg-dark-grey); padding: 30px; border-radius: 8px; width: 90%; max-width: 650px;
-            max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.7); border: 1px solid #333;
-        }
+        /* --- MODAIS --- */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { background-color: var(--bg-dark-grey); padding: 30px; border-radius: 8px; width: 90%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.7); border: 1px solid #333; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #aaa; z-index: 100;}
         .close-btn:hover { color: var(--netflix-red); }
 
-        .admin-opinions-list { list-style: none; padding: 0; }
-        .admin-opinions-list li { 
-            background: rgba(255,255,255,0.05); padding: 8px; margin-bottom: 5px; border-radius: 4px; 
-            font-style: italic; color: #ddd; border-left: 3px solid #777;
-        }
-        .admin-rating-display { color: var(--star-gold); margin-left: 5px; letter-spacing: 2px; }
-
-        /* Botão Assistir Youtube */
-        .btn-watch-yt {
-            display: block; width: 100%; background-color: var(--youtube-red); color: white; text-align: center;
-            padding: 15px; font-weight: bold; font-size: 1.1rem; border-radius: 4px; text-decoration: none; margin-top: 15px;
-            transition: background 0.3s; border: none; cursor: pointer;
-        }
+        .btn-watch-yt { display: block; width: 100%; background-color: var(--youtube-red); color: white; text-align: center; padding: 15px; font-weight: bold; font-size: 1.1rem; border-radius: 4px; text-decoration: none; margin-top: 15px; transition: background 0.3s; border: none; cursor: pointer; }
         .btn-watch-yt:hover { background-color: #cc0000; }
 
-        /* --- ADMIN FORM --- */
+        /* --- FORMULÁRIOS --- */
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; margin-bottom: 4px; font-weight: bold; color: #ccc; font-size: 0.85rem;}
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #444;
-            background-color: #222; color: #fff; box-sizing: border-box; font-family: inherit;
-        }
-        .form-group input:focus, .form-group textarea:focus { border-color: var(--netflix-red); outline: none; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #444; background-color: #222; color: #fff; box-sizing: border-box; font-family: inherit; }
         .form-row { display: flex; gap: 10px; }
         .form-row .form-group { flex: 1; }
-
-        .admin-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;}
+        
         .btn-primary { background-color: var(--netflix-red); color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
         .btn-secondary { background-color: #444; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
-        .btn-blue { background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-danger { background-color: #b71c1c; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;}
-
-        /* ÁREA DE CÓDIGO GERADO */
-        #generatedCodeArea {
-            width: 100%; height: 100px; background: #000; color: #0f0; 
-            font-family: monospace; border: 1px solid #333; padding: 10px; margin-top: 10px;
-            display: none;
-        }
-
-        /* --- AVALIAÇÃO USER --- */
-        .user-rating i { font-size: 1.5rem; cursor: pointer; color: #444; transition: color 0.2s; margin-right: 5px;}
-        .user-rating i.active, .user-rating i:hover { color: var(--star-gold); }
-
-        /* --- FOOTER --- */
-        footer {
-            background: #080808; padding: 40px 4%; text-align: center; margin-top: 50px; border-top: 1px solid #222;
-        }
-        .whatsapp-link {
-            display: inline-flex; align-items: center; gap: 10px;
-            background-color: #25D366; color: white; padding: 12px 30px;
-            border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem;
-            transition: transform 0.2s, background-color 0.2s;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-        }
-        .whatsapp-link:hover { transform: scale(1.05); background-color: #20ba5a; }
+        
+        #generatedCodeArea { width: 100%; height: 100px; background: #000; color: #0f0; font-family: monospace; border: 1px solid #333; padding: 10px; margin-top: 10px; display: none; }
+        
+        footer { background: #080808; padding: 40px 4%; text-align: center; margin-top: 50px; border-top: 1px solid #222; }
         .footer-text { color: #555; margin-top: 20px; font-size: 0.8rem; }
 
-        /* --- ALERTS --- */
         #alert-container { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
-        .alert-balloon {
-            background: #222; color: #fff; padding: 15px 25px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            font-weight: bold; display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            border-left: 4px solid var(--netflix-red);
-        }
+        .alert-balloon { background: #222; color: #fff; padding: 15px 25px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-left: 4px solid var(--netflix-red); display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s forwards; }
         .alert-warning { border-left-color: #ff9800; }
-
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOut { to { transform: translateX(100%); opacity: 0; } }
-
-        @media (max-width: 768px) {
-            .hero-title { font-size: 2rem; }
-            .modal-content { width: 92%; padding: 15px; margin: 10px; }
-            .movie-card { min-width: 140px; height: 210px; }
-            .form-row { flex-direction: column; gap: 0;}
-            .section-title { font-size: 1.2rem; }
-        }
+        @media (max-width: 768px) { .modal-content { width: 92%; padding: 15px; margin: 10px; } .form-row { flex-direction: column; gap: 0;} }
     </style>
 </head>
 <body>
@@ -299,7 +115,6 @@
     <div class="modal-overlay" id="detailsModal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeDetailsModal()">&times;</span>
-            
             <div class="tv-container-wrapper">
                 <div class="retro-tv">
                     <div class="tv-screen-inner">
@@ -308,31 +123,16 @@
                     </div>
                 </div>
             </div>
-
             <a href="#" target="_blank" id="btnWatchFull" class="btn-watch-yt" style="display:none;">
                 <i class="fab fa-youtube"></i> Assistir Filme Completo
             </a>
-            
             <br>
-            <h2 id="detailTitle" style="margin-top: 0; color: var(--netflix-red);">Título do Filme</h2>
-            <p><strong>Nota da Crítica:</strong> <span id="detailAdminRating" class="admin-rating-display"></span></p>
+            <h2 id="detailTitle" style="margin-top: 0; color: var(--netflix-red);">Título</h2>
             <p><strong>Elenco:</strong> <span id="detailCast" style="color: #bbb;"></span></p>
             <p id="detailSummary" style="line-height: 1.6; color: #ccc; font-size: 0.95rem;"></p>
-
             <div id="opinionsSection" style="display: none; margin-top: 20px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
                 <strong style="color: #fff;">O que dizem:</strong>
                 <ul id="detailOpinionsList" class="admin-opinions-list" style="margin-top: 10px;"></ul>
-            </div>
-            
-            <hr style="border-color: #333; margin: 25px 0;">
-            
-            <h3>Sua Avaliação:</h3>
-            <div class="user-rating" id="ratingStars">
-                <i class="fas fa-star" data-value="1"></i>
-                <i class="fas fa-star" data-value="2"></i>
-                <i class="fas fa-star" data-value="3"></i>
-                <i class="fas fa-star" data-value="4"></i>
-                <i class="fas fa-star" data-value="5"></i>
             </div>
         </div>
     </div>
@@ -340,10 +140,9 @@
     <div class="modal-overlay" id="adminModal">
         <div class="modal-content" style="border-top: 4px solid var(--netflix-red);">
             <span class="close-btn" onclick="closeAdminModal()">&times;</span>
-            <h2 style="color: var(--netflix-red); margin:0;">Adicionar Filme (Gerador)</h2>
-            <p style="font-size: 0.8rem; color: #aaa;">Preencha os dados e clique em "Gerar Código". Depois copie e cole na área "CENTRAL DE FILMES" no código.</p>
+            <h2 style="color: var(--netflix-red); margin:0;">Adicionar Filme</h2>
+            <p style="font-size: 0.8rem; color: #aaa;">Preencha, clique em "Gerar Código", copie e cole na área CATALOGO_FILMES do código.</p>
             <br>
-            
             <form id="movieForm">
                 <div class="form-row">
                     <div class="form-group">
@@ -353,132 +152,65 @@
                             <option value="youtube">Filme Completo (YouTube)</option>
                         </select>
                     </div>
-                     <div class="form-group">
-                        <label>Agendar (Opcional)</label>
-                        <input type="datetime-local" id="inputSchedule" style="color-scheme: dark;">
-                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label>Título</label>
-                    <input type="text" id="inputTitle" required placeholder="Ex: O Poderoso Chefão">
-                </div>
-
+                <div class="form-group"><label>Título</label><input type="text" id="inputTitle" required placeholder="Ex: Matrix"></div>
                 <div class="form-row">
-                    <div class="form-group">
-                       <label>URL Poster</label>
-                       <input type="url" id="inputImg" required placeholder="https://...">
-                   </div>
-                   <div class="form-group">
-                       <label>Link Trailer (YouTube)</label>
-                       <input type="url" id="inputTrailer" required placeholder="Link do YouTube...">
-                   </div>
+                   <div class="form-group"><label>URL Poster</label><input type="url" id="inputImg" required></div>
+                   <div class="form-group"><label>Link YouTube</label><input type="url" id="inputTrailer" required></div>
                 </div>
-
-                <div class="form-group" id="watchLinkGroup" style="display: none; background: #330000; padding: 10px; border-radius: 4px; border: 1px dashed var(--youtube-red);">
-                    <label style="color: var(--youtube-red);">Link para Assistir (Link Direto)</label>
-                    <input type="url" id="inputWatchLink" placeholder="https://...">
-                </div>
-
-                <div class="form-group">
-                    <label>Elenco</label>
-                    <input type="text" id="inputCast" placeholder="Atores...">
-                </div>
-                <div class="form-group">
-                    <label>Sinopse</label>
-                    <textarea id="inputSummary" rows="3" placeholder="Resumo..."></textarea>
-                </div>
+                <div class="form-group" id="watchLinkGroup" style="display: none;"><label>Link Assistir</label><input type="url" id="inputWatchLink"></div>
+                <div class="form-group"><label>Elenco</label><input type="text" id="inputCast"></div>
+                <div class="form-group"><label>Sinopse</label><textarea id="inputSummary" rows="3"></textarea></div>
+                <div class="form-group"><label>Nota (1-5)</label><select id="inputAdminRating"><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select></div>
+                <div class="form-group"><label>Comentário</label><textarea id="inputOpinions" rows="2"></textarea></div>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nota Crítica</label>
-                        <select id="inputAdminRating">
-                            <option value="5">⭐⭐⭐⭐⭐ 5</option>
-                            <option value="4">⭐⭐⭐⭐ 4</option>
-                            <option value="3">⭐⭐⭐ 3</option>
-                            <option value="2">⭐⭐ 2</option>
-                            <option value="1">⭐ 1</option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="flex: 2;">
-                        <label>Comentários (Um por linha)</label>
-                        <textarea id="inputOpinions" rows="3" placeholder="Comentário..."></textarea>
-                    </div>
-                </div>
-
                 <div class="admin-actions">
-                    <button type="button" class="btn-primary" onclick="generateCode()">Gerar Código para GitHub</button>
+                    <button type="button" class="btn-primary" onclick="generateCode()">Gerar Código</button>
                     <button type="button" class="btn-secondary" onclick="document.getElementById('movieForm').reset()">Limpar</button>
                 </div>
-
-                <textarea id="generatedCodeArea" readonly placeholder="O código aparecerá aqui para você copiar..."></textarea>
+                <textarea id="generatedCodeArea" readonly onclick="this.select()" placeholder="Código gerado aparecerá aqui..."></textarea>
             </form>
         </div>
     </div>
 
     <footer>
-        <a href="https://whatsapp.com/channel/0029VbC56p4JJhzYEmaMSC45" target="_blank" class="whatsapp-link">
-            <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
-            Canal de Sugestões
-        </a>
-        <p class="footer-text">© 2023 Unitv Guide. Feito por quem entende de filme.</p>
+        <p class="footer-text">© 2023 Unitv Guide.</p>
     </footer>
 
     <script>
         /* =========================================================================
-           🎬 CENTRAL DE FILMES (EDITE AQUI PARA APARECER PARA TODOS) 🎬
-           ========================================================================= 
-           
-           INSTRUÇÕES:
-           1. Use o painel da Engrenagem para criar o filme.
-           2. Clique em "Gerar Código" e copie o texto.
-           3. Cole o texto dentro desta lista CATALOGO_FILMES abaixo.
-           4. Atenção com as vírgulas! Cada bloco { } deve ser separado por vírgula.
-        */
+           🎬 CENTRAL DE FILMES (COLE O CÓDIGO GERADO DENTRO DESTES COLCHETES) 🎬
+           ========================================================================= */
 
         const CATALOGO_FILMES = [
-            
-            // --- INICIO DOS FILMES ---
             
             { 
                 id: 1, 
                 category: 'unitv', 
-                title: "Big Buck Bunny (Teste V15)", 
+                title: "Big Buck Bunny (Teste V15.1)", 
                 img: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg", 
                 cast: "Blender Foundation", 
-                summary: "Filme de teste oficial. Se este filme aparecer, significa que a Central de Filmes (V15) está funcionando perfeitamente no GitHub.", 
+                summary: "Filme de teste oficial. Se este filme aparecer, significa que a Central de Filmes está funcionando.", 
                 trailerUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ", 
                 adminRating: 5, 
-                opinions: ["Funciona 100%", "Edição Global Ativa"], 
+                opinions: ["Funciona 100%"], 
                 watchLink: ""
             },
-            { 
-                id: 1767222711126, 
-                category: 'unitv', 
-                title: "Ghost - do outro lado da vida.", 
-                img: "https://peixe123.github.io/filmoteca/ghost-imagem2.jpg", 
-                cast: "Demy Moore...", 
-                summary: "O amor depois da morte.", 
-                trailerUrl: "https://youtu.be/9O1Iy9od7-A?si=CSHmRjRwxg25Ks2g", 
-                adminRating: 5, 
-                opinions: ["chorei..."], 
-                watchLink: ""
-            },
+            
+            // ---> COLE SEUS NOVOS FILMES ABAIXO DESTA LINHA (Não esqueça da vírgula acima!) <---
 
-            // --- COLE SEU NOVO FILME AQUI EMBAIXO (DÊ UM ENTER ANTES) ---
+
         ];
 
         /* =========================================================================
-           FIM DA ÁREA DE EDIÇÃO (NÃO PRECISA MEXER PRA BAIXO)
+           FIM DA ÁREA DE EDIÇÃO
            ========================================================================= */
 
-        const movies = CATALOGO_FILMES; // Agora usamos a lista fixa como fonte da verdade
+        const movies = CATALOGO_FILMES;
 
-        // --- SISTEMA DA ENGRENAGEM (ABRE O GERADOR) ---
         let gearClicks = 0;
         let gearTimer = null;
         const gearBtn = document.getElementById('adminGear');
-
         if(gearBtn) {
             gearBtn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -488,33 +220,26 @@
                     clearTimeout(gearTimer);
                     gearClicks = 0;
                     openAdminModal();
-                    showAlert("Gerador de Código Aberto! 🛠️", "success");
+                    showAlert("Modo Editor Ativo 🛠️", "success");
                 }
             });
         }
 
-        // --- FUNÇÃO GERADORA DE CÓDIGO (A MAGIA ACONTECE AQUI) ---
         function generateCode() {
             const title = document.getElementById('inputTitle').value;
             const img = document.getElementById('inputImg').value;
             const trailer = document.getElementById('inputTrailer').value;
+            if(!title || !img || !trailer) { showAlert("Preencha o básico!", "warning"); return; }
             
-            if(!title || !img || !trailer) {
-                showAlert("Preencha Título, Poster e Trailer!", "error");
-                return;
-            }
-
             const cat = document.getElementById('inputCategory').value;
             const watch = document.getElementById('inputWatchLink').value;
             const cast = document.getElementById('inputCast').value;
-            const sum = document.getElementById('inputSummary').value.replace(/\n/g, " "); // Remove quebras de linha
+            const sum = document.getElementById('inputSummary').value.replace(/\n/g, " ");
             const rating = document.getElementById('inputAdminRating').value;
+            const ops = document.getElementById('inputOpinions').value;
             
-            const opsRaw = document.getElementById('inputOpinions').value;
-            const opsArray = opsRaw.split('\n').filter(x => x.trim() !== "").map(x => `"${x.trim()}"`).join(", ");
-
-            // Cria o objeto formatado em texto
             const newId = Date.now();
+            // Gera o código formatado COM A VÍRGULA NO COMEÇO para evitar erro
             const codeBlock = `
             { 
                 id: ${newId}, 
@@ -525,7 +250,7 @@
                 summary: "${sum}", 
                 trailerUrl: "${trailer}", 
                 adminRating: ${rating}, 
-                opinions: [${opsArray}], 
+                opinions: ["${ops}"], 
                 watchLink: "${watch}"
             },`;
 
@@ -534,29 +259,20 @@
             area.value = codeBlock;
             area.select();
             document.execCommand('copy');
-            
-            showAlert("Código copiado! Agora cole na Central de Filmes.", "success");
+            showAlert("Copiado! Cole no topo do arquivo.", "success");
         }
 
-        // --- ALERTS ---
         function showAlert(msg, type = 'info') {
             const container = document.getElementById('alert-container');
             const balloon = document.createElement('div');
             balloon.className = 'alert-balloon';
             if (type === 'warning') balloon.classList.add('alert-warning');
-            
-            let icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
-            balloon.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`;
+            balloon.innerHTML = `<span>${msg}</span>`;
             if(type === 'success') balloon.style.borderLeftColor = '#2ecc71';
-            
             container.appendChild(balloon);
-            setTimeout(() => {
-                balloon.style.animation = 'slideOut 0.5s forwards';
-                setTimeout(() => balloon.remove(), 500);
-            }, 3000);
+            setTimeout(() => { balloon.style.animation = 'slideOut 0.5s forwards'; setTimeout(() => balloon.remove(), 500); }, 3000);
         }
 
-        // --- EXTRATOR DE ID YOUTUBE (SIMPLES E EFICIENTE) ---
         function getYoutubeId(url) {
             if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -564,7 +280,6 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // --- RENDERIZAR FILMES ---
         function renderMovies() {
             const containerUnitv = document.getElementById('unitvContainer');
             const containerYoutube = document.getElementById('youtubeContainer');
@@ -572,20 +287,11 @@
 
             containerUnitv.innerHTML = '';
             containerYoutube.innerHTML = '';
-            const now = new Date();
 
-            // Filtra filmes (se tiver agendamento futuro, esconde)
-            const visibleMovies = movies.filter(m => !m.schedule || new Date(m.schedule) <= now);
-
-            if (visibleMovies.length === 0) {
-                containerUnitv.innerHTML = '<p style="padding: 20px; opacity: 0.7;">Nada por aqui.</p>'; return;
-            }
-
-            visibleMovies.forEach((movie) => {
+            movies.forEach((movie) => {
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 card.onclick = () => openDetails(movie.id);
-
                 const cat = movie.category || 'unitv';
                 const badge = cat === 'youtube' ? `<div class="type-badge badge-yt">YouTube</div>` : ``;
                 
@@ -594,104 +300,62 @@
                     const finalScore = (movie.adminRating * 2).toFixed(1);
                     ratingBadge = `<div class="rating-badge">Nota: ${finalScore}</div>`;
                 }
-
-                card.innerHTML = `
-                    ${badge}
-                    ${ratingBadge}
-                    <img src="${movie.img}" class="movie-img" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/160x240?text=Sem+Imagem'">
-                    <div class="movie-info-overlay"><div class="movie-title">${movie.title}</div></div>
-                `;
-
+                card.innerHTML = `${badge}${ratingBadge}<img src="${movie.img}" class="movie-img" onerror="this.src='https://via.placeholder.com/160x240?text=Sem+Imagem'"><div class="movie-info-overlay"><div class="movie-title">${movie.title}</div></div>`;
                 if(cat === 'youtube') containerYoutube.appendChild(card);
                 else containerUnitv.appendChild(card);
             });
         }
 
-        function scrollToFilms() { 
-            const el = document.querySelector('.section-title');
-            if(el) el.scrollIntoView({ behavior: 'smooth' }); 
-        }
+        function scrollToFilms() { const el = document.querySelector('.section-title'); if(el) el.scrollIntoView({ behavior: 'smooth' }); }
 
-        // --- MODAL DETALHES ---
-        let currentMovieId = null;
         function openDetails(id) {
             const movie = movies.find(m => m.id === id);
             if(!movie) return;
-            currentMovieId = id;
             document.getElementById('detailTitle').innerText = movie.title;
             document.getElementById('detailCast').innerText = movie.cast;
             document.getElementById('detailSummary').innerText = movie.summary;
-
             const trailerContainer = document.getElementById('trailerContainer');
             const videoId = getYoutubeId(movie.trailerUrl);
-            
             if (videoId) {
-                // Player limpo V15
                 const safeUrl = `https://www.youtube.com/embed/${videoId}?rel=0`; 
                 trailerContainer.innerHTML = `<iframe src="${safeUrl}" title="Player" allowfullscreen></iframe>`;
-            } else {
-                trailerContainer.innerHTML = '<div style="display:flex;height:100%;align-items:center;justify-content:center;color:#555;text-align:center;padding:20px;">Vídeo indisponível.</div>';
-            }
-
-            const btnWatch = document.getElementById('btnWatchFull');
-            const cat = movie.category || 'unitv';
+            } else { trailerContainer.innerHTML = '<div style="color:#555;text-align:center;padding:20px;">Vídeo indisponível.</div>'; }
             
-            if(cat === 'youtube' && movie.watchLink) {
+            const btnWatch = document.getElementById('btnWatchFull');
+            if(movie.category === 'youtube' && movie.watchLink) {
                 btnWatch.style.display = 'block';
                 btnWatch.href = movie.watchLink;
-                btnWatch.innerHTML = '<i class="fab fa-youtube"></i> Assistir Filme Completo';
+                btnWatch.innerText = 'Assistir Filme Completo';
             } else if (videoId) {
                 btnWatch.style.display = 'block';
                 btnWatch.href = `https://www.youtube.com/watch?v=${videoId}`;
-                btnWatch.innerHTML = '<i class="fab fa-youtube"></i> Ver no YouTube (Externo)';
-            } else {
-                btnWatch.style.display = 'none';
-            }
+                btnWatch.innerText = 'Ver no YouTube';
+            } else { btnWatch.style.display = 'none'; }
 
-            const adminRatingContainer = document.getElementById('detailAdminRating');
-            let adminStarsHTML = '';
-             if(movie.adminRating > 0) {
-                for(let i=1; i<=5; i++) adminStarsHTML += `<i class="fas fa-star ${i <= movie.adminRating ? '' : 'far'}" style="font-size:0.9rem;"></i>`;
-                 adminRatingContainer.innerHTML = adminStarsHTML;
-            } else { adminRatingContainer.innerHTML = '<span style="color:#777;">N/A</span>'; }
-            
-            const opinionsSection = document.getElementById('opinionsSection');
             const opinionsList = document.getElementById('detailOpinionsList');
             opinionsList.innerHTML = '';
             if(movie.opinions && movie.opinions.length > 0) {
-                movie.opinions.forEach(op => {
-                    const li = document.createElement('li'); li.innerText = `"${op}"`; opinionsList.appendChild(li);
-                });
-                opinionsSection.style.display = 'block';
-            } else { opinionsSection.style.display = 'none'; }
-
-            // Renderiza estrelas do usuário (apenas visual local)
-            const stars = document.querySelectorAll('#ratingStars i');
-            stars.forEach(s => s.classList.remove('active'));
+                movie.opinions.forEach(op => { const li = document.createElement('li'); li.innerText = `"${op}"`; opinionsList.appendChild(li); });
+                document.getElementById('opinionsSection').style.display = 'block';
+            } else { document.getElementById('opinionsSection').style.display = 'none'; }
             document.getElementById('detailsModal').style.display = 'flex';
         }
 
         function closeDetailsModal() {
             document.getElementById('detailsModal').style.display = 'none';
             document.getElementById('trailerContainer').innerHTML = '';
-            currentMovieId = null;
         }
-
         function toggleWatchField() {
             const cat = document.getElementById('inputCategory').value;
-            const group = document.getElementById('watchLinkGroup');
-            group.style.display = cat === 'youtube' ? 'block' : 'none';
+            document.getElementById('watchLinkGroup').style.display = cat === 'youtube' ? 'block' : 'none';
         }
-
         function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
         function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
-
         window.onclick = function(event) {
             if (event.target == document.getElementById('detailsModal')) closeDetailsModal();
             if (event.target == document.getElementById('adminModal')) closeAdminModal();
         }
+        window.addEventListener('DOMContentLoaded', () => { renderMovies(); });
     </script>
 </body>
 </html>
-
-
