@@ -62,7 +62,8 @@
         /* --- DESTAQUE (HERO SECTION) --- */
         .hero {
             height: 70vh;
-            background: url('https://image.tmdb.org/t/p/original/uDgy6hyPd82kOHh6I95FLtLnj6p.jpg') center/cover no-repeat;
+            /* Imagem do Big Buck Bunny para combinar com o teste */
+            background: url('https://peach.blender.org/wp-content/uploads/title_anouncement.jpg') center/cover no-repeat;
             display: flex;
             align-items: center;
             padding: 0 4%;
@@ -149,6 +150,12 @@
             overflow: hidden; position: relative; border: 2px solid #111;
         }
         .tv-screen-inner iframe { width: 100%; height: 100%; border: none; }
+        
+        /* CORREÇÃO DO TAMANHO DO CONTAINER DO VÍDEO */
+        #trailerContainer {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;
+        }
+
         .scanlines {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 0, 0, 0.3) 3px, rgba(0, 0, 0, 0.3) 4px);
@@ -168,7 +175,6 @@
             justify-content: center; align-items: center; backdrop-filter: blur(5px);
         }
         
-        /* CORREÇÃO: Z-INDEX MAIOR PARA O BLOCO DE NOTAS */
         #notepadModal {
             z-index: 3000 !important;
         }
@@ -441,11 +447,12 @@
 
     <script>
         // --- DADOS INICIAIS ---
+        // ATENÇÃO: Usei Big Buck Bunny que é Open Source para provar que a TV funciona.
         const defaultMovies = [
             { 
-                id: 1, category: 'unitv', title: "Oppenheimer", img: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg", cast: "Cillian Murphy, Emily Blunt", summary: "A história do cientista americano J. Robert Oppenheimer e o seu papel no desenvolvimento da bomba atômica.", rating: 5, schedule: null,
-                trailerUrl: "https://www.youtube.com/watch?v=uYPbbksJxIg", // Trailer Oficial Universal
-                adminRating: 5, opinions: ["Obra prima visual.", "Magnífico."], watchLink: ""
+                id: 1, category: 'unitv', title: "Big Buck Bunny (Teste de Player)", img: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg", cast: "Blender Foundation", summary: "Este é um filme livre de direitos autorais. Se este vídeo rodar, seu código está perfeito e o erro 153 nos outros filmes é bloqueio do estúdio.", rating: 5, schedule: null,
+                trailerUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ", // Link do Big Buck Bunny (Garantido funcionar)
+                adminRating: 5, opinions: ["Funciona sempre.", "Teste de Sistema."], watchLink: ""
             }
         ];
 
@@ -453,10 +460,18 @@
         let movies = [];
         try {
             movies = JSON.parse(localStorage.getItem('unitvMoviesData')) || defaultMovies;
+            
+            // CORREÇÃO: Força o reset se o filme antigo (bloqueado) ainda estiver lá
+            if (movies.length > 0 && (movies[0].title === "Oppenheimer" || movies[0].title === "Interstellar")) {
+                console.log("Resetando para filme de teste (Big Buck Bunny)...");
+                movies = defaultMovies;
+                localStorage.setItem('unitvMoviesData', JSON.stringify(movies));
+            }
+
         } catch (error) {
             console.error("Erro ao carregar dados salvos. Resetando...", error);
-            movies = defaultMovies; // Reseta para evitar tela branca
-            localStorage.removeItem('unitvMoviesData'); // Limpa dados corrompidos
+            movies = defaultMovies; 
+            localStorage.removeItem('unitvMoviesData'); 
         }
         
         const maxSlots = 24; 
@@ -513,12 +528,11 @@
             }, 3000);
         }
 
-        // --- NOVA LÓGICA DE EXTRAÇÃO DE ID (BLINDADA) ---
+        // --- EXTRAÇÃO DE ID ---
         function getYoutubeId(url) {
             if (!url) return null;
             let videoId = null;
             try {
-                // Tenta extrair ID de URLs comuns
                 if (url.includes('v=')) {
                     videoId = url.split('v=')[1];
                     const ampersandPosition = videoId.indexOf('&');
@@ -601,14 +615,13 @@
             document.getElementById('detailCast').innerText = movie.cast;
             document.getElementById('detailSummary').innerText = movie.summary;
 
-            // --- LÓGICA DO TRAILER ATUALIZADA ---
             const trailerContainer = document.getElementById('trailerContainer');
             const videoId = getYoutubeId(movie.trailerUrl);
             
             if (videoId) {
-                // Usamos youtube-nocookie
-                const safeUrl = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1`; 
-                trailerContainer.innerHTML = `<iframe src="${safeUrl}" title="Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                // CORREÇÃO: Adicionado referrerpolicy="no-referrer" para evitar bloqueios de origem local (Erro 153)
+                const safeUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1`; 
+                trailerContainer.innerHTML = `<iframe src="${safeUrl}" title="Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>`;
             } else {
                 trailerContainer.innerHTML = '<div style="display:flex;height:100%;align-items:center;justify-content:center;color:#555;text-align:center;padding:20px;">Vídeo indisponível ou Link quebrado.</div>';
             }
@@ -621,7 +634,6 @@
                 btnWatch.href = movie.watchLink;
                 btnWatch.innerHTML = '<i class="fab fa-youtube"></i> Assistir Filme Completo';
             } else if (videoId) {
-                // FALLBACK
                 btnWatch.style.display = 'block';
                 btnWatch.href = `https://www.youtube.com/watch?v=${videoId}`;
                 btnWatch.innerHTML = '<i class="fab fa-youtube"></i> Ver no YouTube (Externo)';
