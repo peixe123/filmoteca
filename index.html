@@ -3,29 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unitv Filmes - Premium Guide (V15.1)</title>
+    <title>Unitv Filmes - Premium Guide (V15.3)</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
 
     <style>
         /* --- ESTILO GERAL --- */
-        :root { --netflix-red: #E50914; --youtube-red: #FF0000; --bg-black: #141414; --bg-dark-grey: #181818; --text-white: #fff; --star-gold: #ffc107; --tv-bezel: #2a2a2a; --rating-green: #46d369; }
-        body { background-color: var(--bg-black); color: var(--text-white); font-family: 'Roboto', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { 
+            --netflix-red: #E50914; 
+            --youtube-red: #FF0000; 
+            --iptv-purple: #6200ea; 
+            --bg-black: #141414; 
+            --bg-dark-grey: #181818; 
+            --text-white: #fff; 
+            --star-gold: #ffc107; 
+            --tv-bezel: #2a2a2a; 
+            --rating-green: #46d369; 
+        }
+        body { background-color: var(--bg-black); color: var(--text-white); font-family: 'Roboto', sans-serif; margin: 0; padding: 0; overflow-x: hidden; padding-bottom: 100px; }
 
         /* --- HEADER --- */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 4%; background: linear-gradient(to bottom, rgba(0,0,0,0.9) 10%, rgba(0,0,0,0)); position: fixed; width: 92%; z-index: 1000; }
-        .logo { color: var(--netflix-red); font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px #000; }
-        .secret-gear { color: rgba(255, 255, 255, 0.05); font-size: 1.5rem; cursor: pointer; padding: 10px; transition: color 0.3s; }
-        .secret-gear:hover { color: rgba(255, 255, 255, 0.2); }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 4%; 
+            background: linear-gradient(to bottom, rgba(0,0,0,0.95) 20%, rgba(0,0,0,0)); 
+            position: fixed; 
+            width: 92%; 
+            z-index: 1000; 
+            top: 0;
+        }
+        
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo { color: var(--netflix-red); font-size: 1.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; text-shadow: 2px 2px 4px #000; }
+        
+        .status-info {
+            display: flex; align-items: center; gap: 15px; font-size: 0.9rem; color: #ccc;
+            background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; border: 1px solid #333;
+        }
+        .wifi-icon { font-size: 1.1rem; }
+        .clock { font-weight: bold; color: #fff; font-family: monospace; font-size: 1.1rem;}
+
+        .secret-gear { color: rgba(255, 255, 255, 0.1); font-size: 1.2rem; cursor: pointer; padding: 10px; transition: color 0.3s; }
+        .secret-gear:hover { color: rgba(255, 255, 255, 0.4); }
 
         /* --- HERO --- */
         .hero { height: 70vh; background: url('https://image.tmdb.org/t/p/original/uDgy6hyPd82kOHh6I95FLtLnj6p.jpg') center/cover no-repeat; display: flex; align-items: center; padding: 0 4%; position: relative; }
         .hero::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 200px; background: linear-gradient(to top, var(--bg-black), transparent); }
         .hero-content { z-index: 10; max-width: 600px; }
-        .hero-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero-title { font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .hero-desc { font-size: 1.1rem; margin-bottom: 20px; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
-        .btn-hero { background-color: var(--netflix-red); color: white; padding: 12px 30px; border: none; border-radius: 4px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 10px; }
-        .btn-hero:hover { transform: scale(1.05); }
+        
+        /* --- BOTÕES FIXOS INFERIORES --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 5000; /* Z-index alto, mas menor que o modal agora */
+            background: rgba(20, 20, 20, 0.9);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        /* Classe para esconder botões quando modal abrir */
+        .bottom-nav.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(50px);
+        }
+
+        .nav-btn {
+            display: flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 30px; border: none;
+            color: white; font-weight: bold; font-size: 1rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; text-transform: uppercase;
+        }
+        .btn-yt-nav { background: var(--youtube-red); }
+        .btn-iptv-nav { background: var(--iptv-purple); }
+        .nav-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .nav-btn.active { border: 2px solid white; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
 
         /* --- LISTAS --- */
         .section-title { padding: 0 4%; margin-top: 10px; position: relative; z-index: 20; font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; border-left: 5px solid var(--netflix-red); padding-left: 15px; margin-left: 4%; }
@@ -35,7 +96,7 @@
         .carousel-container::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
 
         .movie-card { min-width: 160px; height: 240px; border-radius: 4px; position: relative; transition: transform 0.3s ease, z-index 0.3s; cursor: pointer; background-color: #222; overflow: hidden; flex-shrink: 0; }
-        .movie-card:hover { transform: scale(1.1); z-index: 50; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        .movie-card:hover { transform: scale(1.1); z-index: 50; box-shadow: 0 0 20px rgba(0,0,0,0.8); border: 2px solid white; }
         .movie-img { width: 100%; height: 100%; object-fit: cover; }
         .movie-info-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); opacity: 0; transition: opacity 0.3s; }
         .movie-card:hover .movie-info-overlay { opacity: 1; }
@@ -53,8 +114,16 @@
         .scanlines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0, 0, 0, 0.3) 3px, rgba(0, 0, 0, 0.3) 4px); pointer-events: none; z-index: 20; opacity: 0.5; }
         .retro-tv::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 30%); border-radius: 50% / 10%; pointer-events: none; z-index: 30; }
 
-        /* --- MODAIS --- */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        /* --- MODAIS (CORREÇÃO DE Z-INDEX) --- */
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.9); /* Fundo mais escuro */
+            z-index: 6000; /* SUPERIOR AOS BOTÕES (5000) */
+            justify-content: center; align-items: center; 
+            backdrop-filter: blur(5px); 
+        }
         .modal-content { background-color: var(--bg-dark-grey); padding: 30px; border-radius: 8px; width: 90%; max-width: 650px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.7); border: 1px solid #333; }
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: #aaa; z-index: 100;}
         .close-btn:hover { color: var(--netflix-red); }
@@ -62,7 +131,7 @@
         .btn-watch-yt { display: block; width: 100%; background-color: var(--youtube-red); color: white; text-align: center; padding: 15px; font-weight: bold; font-size: 1.1rem; border-radius: 4px; text-decoration: none; margin-top: 15px; transition: background 0.3s; border: none; cursor: pointer; }
         .btn-watch-yt:hover { background-color: #cc0000; }
 
-        /* --- FORMULÁRIOS --- */
+        /* --- ADMIN --- */
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; margin-bottom: 4px; font-weight: bold; color: #ccc; font-size: 0.85rem;}
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #444; background-color: #222; color: #fff; box-sizing: border-box; font-family: inherit; }
@@ -74,21 +143,27 @@
         
         #generatedCodeArea { width: 100%; height: 100px; background: #000; color: #0f0; font-family: monospace; border: 1px solid #333; padding: 10px; margin-top: 10px; display: none; }
         
-        footer { background: #080808; padding: 40px 4%; text-align: center; margin-top: 50px; border-top: 1px solid #222; }
-        .footer-text { color: #555; margin-top: 20px; font-size: 0.8rem; }
-
-        #alert-container { position: fixed; top: 20px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; }
-        .alert-balloon { background: #222; color: #fff; padding: 15px 25px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-left: 4px solid var(--netflix-red); display: flex; align-items: center; gap: 10px; animation: slideIn 0.5s forwards; }
-        .alert-warning { border-left-color: #ff9800; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideOut { to { transform: translateX(100%); opacity: 0; } }
-        @media (max-width: 768px) { .modal-content { width: 92%; padding: 15px; margin: 10px; } .form-row { flex-direction: column; gap: 0;} }
+        /* --- BALÕES (ALERT) --- */
+        #alert-container { position: fixed; top: 80px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .alert-balloon { background: #222; color: #fff; padding: 15px 25px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid var(--netflix-red); display: flex; align-items: center; gap: 10px; animation: bounceIn 0.5s forwards; pointer-events: auto; }
+        .alert-warning { border-color: #ff9800; color: #ff9800; }
+        .alert-success { border-color: #2ecc71; color: #2ecc71; }
+        
+        @keyframes bounceIn { 0% { transform: scale(0); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
+        @media (max-width: 768px) { .modal-content { width: 92%; padding: 15px; margin: 10px; } .form-row { flex-direction: column; gap: 0;} .bottom-nav { width: 90%; justify-content: space-around; } }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">UNITV FILMES</div>
+        <div class="header-left">
+            <div class="logo">UNITV</div>
+            <div class="status-info">
+                <i id="wifi-icon" class="fas fa-wifi wifi-icon"></i>
+                <span id="clock-display" class="clock">00:00</span>
+                <span id="date-display" style="font-size: 0.7em; margin-left: 5px; opacity: 0.7;">--/--</span>
+            </div>
+        </div>
         <div id="adminGear" class="secret-gear">
             <i class="fas fa-cog"></i>
         </div>
@@ -96,20 +171,26 @@
 
     <div class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">O Melhor do Cinema</h1>
-            <p class="hero-desc">Confira os destaques da programação Unitv e filmes completos selecionados.</p>
-            <button class="btn-hero" onclick="scrollToFilms()">
-                <i class="fas fa-play-circle"></i> Ver Programação
-            </button>
+            <h1 class="hero-title">Cinema em Casa</h1>
+            <p class="hero-desc">O melhor do entretenimento selecionado para você.</p>
         </div>
     </div>
 
     <div id="alert-container"></div>
 
-    <h2 class="section-title">Em exibição na Unitv Filmes</h2>
+    <div class="bottom-nav">
+        <button class="nav-btn btn-yt-nav" onclick="filterCategory('youtube', this)">
+            <i class="fab fa-youtube"></i> YouTube
+        </button>
+        <button class="nav-btn btn-iptv-nav" onclick="filterCategory('unitv', this)">
+            <i class="fas fa-tv"></i> IPTV
+        </button>
+    </div>
+
+    <h2 class="section-title">Catálogo Unitv (IPTV)</h2>
     <div class="carousel-container" id="unitvContainer"></div>
 
-    <h2 class="section-title" style="border-left-color: var(--youtube-red);">Filmes Completos no YouTube</h2>
+    <h2 class="section-title" style="border-left-color: var(--youtube-red);">YouTube Filmes</h2>
     <div class="carousel-container" id="youtubeContainer"></div>
 
     <div class="modal-overlay" id="detailsModal">
@@ -131,7 +212,7 @@
             <p><strong>Elenco:</strong> <span id="detailCast" style="color: #bbb;"></span></p>
             <p id="detailSummary" style="line-height: 1.6; color: #ccc; font-size: 0.95rem;"></p>
             <div id="opinionsSection" style="display: none; margin-top: 20px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
-                <strong style="color: #fff;">O que dizem:</strong>
+                <strong style="color: #fff;">Comentário Admin:</strong>
                 <ul id="detailOpinionsList" class="admin-opinions-list" style="margin-top: 10px;"></ul>
             </div>
         </div>
@@ -141,7 +222,7 @@
         <div class="modal-content" style="border-top: 4px solid var(--netflix-red);">
             <span class="close-btn" onclick="closeAdminModal()">&times;</span>
             <h2 style="color: var(--netflix-red); margin:0;">Adicionar Filme</h2>
-            <p style="font-size: 0.8rem; color: #aaa;">Preencha, clique em "Gerar Código", copie e cole na área CATALOGO_FILMES do código.</p>
+            <p style="font-size: 0.8rem; color: #aaa;">Preencha para gerar o código JSON.</p>
             <br>
             <form id="movieForm">
                 <div class="form-row">
@@ -173,75 +254,284 @@
         </div>
     </div>
 
-    <footer>
-        <p class="footer-text">© 2023 Unitv Guide.</p>
-    </footer>
-
     <script>
         /* =========================================================================
-           🎬 CENTRAL DE FILMES (COLE O CÓDIGO GERADO DENTRO DESTES COLCHETES) 🎬
+           🎬 CENTRAL DE FILMES - 5 POSSIBILIDADES (SLOTS) INICIAIS
            ========================================================================= */
 
         const CATALOGO_FILMES = [
-            
+            /* 1. Filme Unitv (Exemplo) */
             { 
                 id: 1, 
                 category: 'unitv', 
-                title: "Big Buck Bunny (Teste V15.1)", 
-                img: "https://peach.blender.org/wp-content/uploads/title_anouncement.jpg", 
-                cast: "Blender Foundation", 
-                summary: "Filme de teste oficial. Se este filme aparecer, significa que a Central de Filmes está funcionando.", 
-                trailerUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ", 
+                title: "Homem-Aranha: Sem Volta", 
+                img: "https://image.tmdb.org/t/p/w500/8c4a8kE7PizaGQQnditMmI1xbRp.jpg", 
+                cast: "Tom Holland, Zendaya", 
+                summary: "Peter Parker tem sua identidade revelada e pede ajuda ao Doutor Estranho.", 
+                trailerUrl: "https://www.youtube.com/watch?v=CyiiEJRZ2qs", 
                 adminRating: 5, 
-                opinions: ["Funciona 100%"], 
-                watchLink: ""
-            },
-            { 
-                id: 1767222711126, 
-                category: 'unitv', 
-                title: "Ghost - do outro lado da vida.", 
-                img: "https://peixe123.github.io/filmoteca/thumbnails/ghost-imagem2.jpg", 
-                cast: "Demy Moore...", 
-                summary: "O amor depois da morte.", 
-                trailerUrl: "https://youtu.be/b25yHLzdn7g?si=Fpc4nN6eY_aCrefL", 
-                adminRating: 5, 
-                opinions: ["chorei..."], 
+                opinions: ["Filmaço!", "Efeitos tops"], 
                 watchLink: ""
             },
             
-            // ---> COLE SEUS NOVOS FILMES ABAIXO DESTA LINHA (Não esqueça da vírgula acima!) <---
-
-
+            /* 2. Filme Unitv (Exemplo) */
+            { 
+                id: 2, 
+                category: 'unitv', 
+                title: "Batman (2022)", 
+                img: "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg", 
+                cast: "Robert Pattinson", 
+                summary: "Bruce Wayne luta contra o crime em Gotham City.", 
+                trailerUrl: "https://www.youtube.com/watch?v=mqqft2x_Aa4", 
+                adminRating: 5, 
+                opinions: ["Muito sombrio", "Melhor Batman"], 
+                watchLink: ""
+            },
+            
+            /* 3. Filme Youtube Completo (Exemplo) */
+            { 
+                id: 3, 
+                category: 'youtube', 
+                title: "Resgate 2", 
+                img: "https://image.tmdb.org/t/p/w500/1H2x2K41Z2N62du24y1z47E1x.jpg", 
+                cast: "Chris Hemsworth", 
+                summary: "Tyler Rake escapa da morte e parte para outra missão perigosa.", 
+                trailerUrl: "https://www.youtube.com/watch?v=Y274jZs5s_g", 
+                adminRating: 4, 
+                opinions: ["Ação pura"], 
+                watchLink: "https://www.youtube.com/watch?v=Y274jZs5s_g" 
+            },
+            
+            /* 4. Filme Unitv (Exemplo) */
+            { 
+                id: 4, 
+                category: 'unitv', 
+                title: "Top Gun: Maverick", 
+                img: "https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17ljH.jpg", 
+                cast: "Tom Cruise", 
+                summary: "Maverick retorna à escola de aviação para treinar a elite.", 
+                trailerUrl: "https://www.youtube.com/watch?v=giXco2jaZ_4", 
+                adminRating: 5, 
+                opinions: ["Melhor que o primeiro"], 
+                watchLink: ""
+            },
+            
+            /* 5. Filme Youtube Completo (Exemplo) */
+            { 
+                id: 5, 
+                category: 'youtube', 
+                title: "A Múmia (Clássico)", 
+                img: "https://image.tmdb.org/t/p/w500/c7a72W5c66X6z2y52d27521.jpg", 
+                cast: "Brendan Fraser", 
+                summary: "Um americano serve na Legião Estrangeira e desperta uma múmia.", 
+                trailerUrl: "https://www.youtube.com/watch?v=fJ1O1vb9AUU", 
+                adminRating: 4, 
+                opinions: ["Nostalgia pura"], 
+                watchLink: "https://www.youtube.com/watch?v=fJ1O1vb9AUU" 
+            }
         ];
 
         /* =========================================================================
-           FIM DA ÁREA DE EDIÇÃO
+           ⚙️ LÓGICA DO SISTEMA
            ========================================================================= */
 
-        const movies = CATALOGO_FILMES;
+        // Se tiver no LocalStorage, usa, se não, usa os 5 iniciais acima
+        let movies = JSON.parse(localStorage.getItem('unitv_movies')) || CATALOGO_FILMES;
 
         let gearClicks = 0;
         let gearTimer = null;
-        const gearBtn = document.getElementById('adminGear');
-        if(gearBtn) {
-            gearBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                gearClicks++;
-                if (gearClicks === 1) gearTimer = setTimeout(() => { gearClicks = 0; }, 2500);
-                if (gearClicks === 5) {
-                    clearTimeout(gearTimer);
-                    gearClicks = 0;
-                    openAdminModal();
-                    showAlert("Modo Editor Ativo 🛠️", "success");
+        
+        function init() {
+            renderMovies();
+            updateClock();
+            checkConnection();
+            checkUpdateTimer(); 
+            
+            setInterval(updateClock, 1000);
+            setInterval(checkConnection, 5000);
+            setInterval(checkUpdateTimer, 60000); 
+            
+            setupAdminGear();
+        }
+
+        // --- Timer Update ---
+        function checkUpdateTimer() {
+            const lastUpdate = localStorage.getItem('lastUpdateTimer');
+            const now = Date.now();
+            if (!lastUpdate) {
+                localStorage.setItem('lastUpdateTimer', now);
+            } else {
+                if ((now - parseInt(lastUpdate)) > 120000) { // 2 minutos
+                    showAlert("🔄 Atualizando catálogo...", "success");
+                    localStorage.setItem('lastUpdateTimer', now);
+                    setTimeout(() => renderMovies(), 1000);
                 }
+            }
+        }
+
+        // --- Relógio e WiFi ---
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock-display').innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('date-display').innerText = now.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+        }
+
+        function checkConnection() {
+            const wifiIcon = document.getElementById('wifi-icon');
+            if (navigator.onLine) {
+                wifiIcon.style.color = '#46d369';
+                wifiIcon.classList.replace('fa-wifi-slash', 'fa-wifi');
+            } else {
+                wifiIcon.style.color = '#FF0000';
+                wifiIcon.classList.replace('fa-wifi', 'fa-wifi-slash');
+                if(!sessionStorage.getItem('offlineAlerted')) {
+                    showAlert("⚠️ Modo Offline Ativo", "warning");
+                    sessionStorage.setItem('offlineAlerted', 'true');
+                }
+            }
+        }
+
+        // --- Renderização ---
+        function renderMovies(filter = null) {
+            const containerUnitv = document.getElementById('unitvContainer');
+            const containerYoutube = document.getElementById('youtubeContainer');
+            if(!containerUnitv || !containerYoutube) return;
+
+            containerUnitv.innerHTML = '';
+            containerYoutube.innerHTML = '';
+
+            movies.forEach((movie) => {
+                if (filter && movie.category !== filter) return;
+
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.onclick = () => openDetails(movie.id);
+                
+                const cat = movie.category || 'unitv';
+                const badge = cat === 'youtube' ? `<div class="type-badge badge-yt">YouTube</div>` : ``;
+                
+                let ratingBadge = '';
+                if(movie.adminRating) {
+                    const finalScore = (movie.adminRating * 2).toFixed(1);
+                    ratingBadge = `<div class="rating-badge">${finalScore}</div>`;
+                }
+
+                card.innerHTML = `
+                    ${badge}
+                    ${ratingBadge}
+                    <img src="${movie.img}" class="movie-img" onerror="this.src='https://via.placeholder.com/160x240?text=Capa'">
+                    <div class="movie-info-overlay">
+                        <div class="movie-title">${movie.title}</div>
+                    </div>
+                `;
+
+                if(cat === 'youtube') containerYoutube.appendChild(card);
+                else containerUnitv.appendChild(card);
             });
         }
+        
+        // --- Filtros ---
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            if (btn.dataset.active === "true") {
+                renderMovies(); 
+                btn.dataset.active = "false";
+            } else {
+                renderMovies(cat);
+                btn.classList.add('active');
+                document.querySelectorAll('.nav-btn').forEach(b => b.dataset.active = "false");
+                btn.dataset.active = "true";
+                const section = cat === 'unitv' ? document.getElementById('unitvContainer') : document.getElementById('youtubeContainer');
+                section.previousElementSibling.scrollIntoView({behavior: 'smooth'});
+            }
+        }
+
+        // --- Modais ---
+        function openDetails(id) {
+            const movie = movies.find(m => m.id === id);
+            if(!movie) return;
+
+            document.getElementById('detailTitle').innerText = movie.title;
+            document.getElementById('detailCast').innerText = movie.cast;
+            document.getElementById('detailSummary').innerText = movie.summary;
+            
+            const trailerContainer = document.getElementById('trailerContainer');
+            const videoId = getYoutubeId(movie.trailerUrl);
+            
+            if (navigator.onLine && videoId) {
+                const safeUrl = `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`; 
+                trailerContainer.innerHTML = `<iframe src="${safeUrl}" title="Player" allowfullscreen></iframe>`;
+            } else { 
+                trailerContainer.innerHTML = '<div style="color:#777;text-align:center;padding:50px;display:flex;flex-direction:column;justify-content:center;height:100%;"><span>🚫</span><span>Offline ou Vídeo Inválido</span></div>'; 
+            }
+            
+            const btnWatch = document.getElementById('btnWatchFull');
+            if(movie.category === 'youtube' && movie.watchLink) {
+                btnWatch.style.display = 'block';
+                btnWatch.href = movie.watchLink;
+            } else {
+                btnWatch.style.display = 'none';
+            }
+
+            const opinionsList = document.getElementById('detailOpinionsList');
+            opinionsList.innerHTML = '';
+            if(movie.opinions && movie.opinions.length > 0) {
+                movie.opinions.forEach(op => { 
+                    const li = document.createElement('li'); li.innerText = `"${op}"`; opinionsList.appendChild(li); 
+                });
+                document.getElementById('opinionsSection').style.display = 'block';
+            } else { 
+                document.getElementById('opinionsSection').style.display = 'none'; 
+            }
+
+            openModal('detailsModal');
+        }
+
+        function closeDetailsModal() {
+            closeModal('detailsModal');
+            document.getElementById('trailerContainer').innerHTML = '';
+        }
+
+        // --- Funções Genéricas de Modal com Controle dos Botões Flutuantes ---
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            // Esconde os botões flutuantes
+            document.querySelector('.bottom-nav').classList.add('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            // Mostra os botões flutuantes de volta
+            document.querySelector('.bottom-nav').classList.remove('hidden');
+        }
+
+        // --- Admin ---
+        function setupAdminGear() {
+            const gearBtn = document.getElementById('adminGear');
+            if(gearBtn) {
+                gearBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    gearClicks++;
+                    if (gearClicks === 1) gearTimer = setTimeout(() => { gearClicks = 0; }, 2500);
+                    if (gearClicks === 5) {
+                        clearTimeout(gearTimer);
+                        gearClicks = 0;
+                        openAdminModal();
+                        showAlert("🛠️ Modo Editor Aberto", "success");
+                    }
+                });
+            }
+        }
+
+        function openAdminModal() { openModal('adminModal'); }
+        function closeAdminModal() { closeModal('adminModal'); }
 
         function generateCode() {
             const title = document.getElementById('inputTitle').value;
             const img = document.getElementById('inputImg').value;
             const trailer = document.getElementById('inputTrailer').value;
-            if(!title || !img || !trailer) { showAlert("Preencha o básico!", "warning"); return; }
+            
+            if(!title || !img) { showAlert("Preencha título e imagem!", "warning"); return; }
             
             const cat = document.getElementById('inputCategory').value;
             const watch = document.getElementById('inputWatchLink').value;
@@ -250,39 +540,46 @@
             const rating = document.getElementById('inputAdminRating').value;
             const ops = document.getElementById('inputOpinions').value;
             
-            const newId = Date.now();
-            // Gera o código formatado COM A VÍRGULA NO COMEÇO para evitar erro
-            const codeBlock = `
-            { 
-                id: ${newId}, 
-                category: '${cat}', 
-                title: "${title}", 
-                img: "${img}", 
-                cast: "${cast}", 
-                summary: "${sum}", 
-                trailerUrl: "${trailer}", 
-                adminRating: ${rating}, 
-                opinions: ["${ops}"], 
-                watchLink: "${watch}"
-            },`;
+            const newMovie = { 
+                id: Date.now(), 
+                category: cat, 
+                title: title, 
+                img: img, 
+                cast: cast, 
+                summary: sum, 
+                trailerUrl: trailer, 
+                adminRating: parseInt(rating), 
+                opinions: [ops], 
+                watchLink: watch
+            };
 
+            movies.push(newMovie);
+            localStorage.setItem('unitv_movies', JSON.stringify(movies));
+            
+            const codeBlock = JSON.stringify(newMovie, null, 4) + ",";
             const area = document.getElementById('generatedCodeArea');
             area.style.display = 'block';
             area.value = codeBlock;
-            area.select();
-            document.execCommand('copy');
-            showAlert("Copiado! Cole no topo do arquivo.", "success");
+            
+            showAlert("✅ Filme adicionado e salvo!", "success");
+            renderMovies(); 
         }
 
+        function toggleWatchField() {
+            const cat = document.getElementById('inputCategory').value;
+            document.getElementById('watchLinkGroup').style.display = cat === 'youtube' ? 'block' : 'none';
+        }
+
+        // --- Helpers ---
         function showAlert(msg, type = 'info') {
             const container = document.getElementById('alert-container');
             const balloon = document.createElement('div');
             balloon.className = 'alert-balloon';
             if (type === 'warning') balloon.classList.add('alert-warning');
+            if (type === 'success') balloon.classList.add('alert-success');
             balloon.innerHTML = `<span>${msg}</span>`;
-            if(type === 'success') balloon.style.borderLeftColor = '#2ecc71';
             container.appendChild(balloon);
-            setTimeout(() => { balloon.style.animation = 'slideOut 0.5s forwards'; setTimeout(() => balloon.remove(), 500); }, 3000);
+            setTimeout(() => { balloon.style.opacity = '0'; setTimeout(() => balloon.remove(), 500); }, 3000);
         }
 
         function getYoutubeId(url) {
@@ -292,84 +589,12 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        function renderMovies() {
-            const containerUnitv = document.getElementById('unitvContainer');
-            const containerYoutube = document.getElementById('youtubeContainer');
-            if(!containerUnitv || !containerYoutube) return;
-
-            containerUnitv.innerHTML = '';
-            containerYoutube.innerHTML = '';
-
-            movies.forEach((movie) => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.onclick = () => openDetails(movie.id);
-                const cat = movie.category || 'unitv';
-                const badge = cat === 'youtube' ? `<div class="type-badge badge-yt">YouTube</div>` : ``;
-                
-                let ratingBadge = '';
-                if(movie.adminRating && movie.adminRating > 0) {
-                    const finalScore = (movie.adminRating * 2).toFixed(1);
-                    ratingBadge = `<div class="rating-badge">Nota: ${finalScore}</div>`;
-                }
-                card.innerHTML = `${badge}${ratingBadge}<img src="${movie.img}" class="movie-img" onerror="this.src='https://via.placeholder.com/160x240?text=Sem+Imagem'"><div class="movie-info-overlay"><div class="movie-title">${movie.title}</div></div>`;
-                if(cat === 'youtube') containerYoutube.appendChild(card);
-                else containerUnitv.appendChild(card);
-            });
-        }
-
-        function scrollToFilms() { const el = document.querySelector('.section-title'); if(el) el.scrollIntoView({ behavior: 'smooth' }); }
-
-        function openDetails(id) {
-            const movie = movies.find(m => m.id === id);
-            if(!movie) return;
-            document.getElementById('detailTitle').innerText = movie.title;
-            document.getElementById('detailCast').innerText = movie.cast;
-            document.getElementById('detailSummary').innerText = movie.summary;
-            const trailerContainer = document.getElementById('trailerContainer');
-            const videoId = getYoutubeId(movie.trailerUrl);
-            if (videoId) {
-                const safeUrl = `https://www.youtube.com/embed/${videoId}?rel=0`; 
-                trailerContainer.innerHTML = `<iframe src="${safeUrl}" title="Player" allowfullscreen></iframe>`;
-            } else { trailerContainer.innerHTML = '<div style="color:#555;text-align:center;padding:20px;">Vídeo indisponível.</div>'; }
-            
-            const btnWatch = document.getElementById('btnWatchFull');
-            if(movie.category === 'youtube' && movie.watchLink) {
-                btnWatch.style.display = 'block';
-                btnWatch.href = movie.watchLink;
-                btnWatch.innerText = 'Assistir Filme Completo';
-            } else if (videoId) {
-                btnWatch.style.display = 'block';
-                btnWatch.href = `https://www.youtube.com/watch?v=${videoId}`;
-                btnWatch.innerText = 'Ver no YouTube';
-            } else { btnWatch.style.display = 'none'; }
-
-            const opinionsList = document.getElementById('detailOpinionsList');
-            opinionsList.innerHTML = '';
-            if(movie.opinions && movie.opinions.length > 0) {
-                movie.opinions.forEach(op => { const li = document.createElement('li'); li.innerText = `"${op}"`; opinionsList.appendChild(li); });
-                document.getElementById('opinionsSection').style.display = 'block';
-            } else { document.getElementById('opinionsSection').style.display = 'none'; }
-            document.getElementById('detailsModal').style.display = 'flex';
-        }
-
-        function closeDetailsModal() {
-            document.getElementById('detailsModal').style.display = 'none';
-            document.getElementById('trailerContainer').innerHTML = '';
-        }
-        function toggleWatchField() {
-            const cat = document.getElementById('inputCategory').value;
-            document.getElementById('watchLinkGroup').style.display = cat === 'youtube' ? 'block' : 'none';
-        }
-        function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
-        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
         window.onclick = function(event) {
             if (event.target == document.getElementById('detailsModal')) closeDetailsModal();
             if (event.target == document.getElementById('adminModal')) closeAdminModal();
         }
-        window.addEventListener('DOMContentLoaded', () => { renderMovies(); });
+
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
-
-
